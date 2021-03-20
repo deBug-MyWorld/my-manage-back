@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guixin.mapper.MenuMapper">
+    <sql id="queryJoin">
+        m.menu_id, m.menu_pid, m.menu_pids, m.menu_name, m.url, m.permission,m.type, m.icon, m.status, m.sort, m.create_time, m.update_time, m.deleted,m.component,m.hidden
+    </sql>
+    <select id="loadPermissionByRoleCode" resultType="menu">
+        select
+        <include refid="queryJoin"/>
+        from menu m
+        left join role_menu rm on rm.menu_id = m.menu_id
+        left join role r on r.role_id = rm.role_id
+        where r.role_code in
+        <foreach collection="permissions" item="permission" open="(" separator="," close=")">
+            #{permission}
+        </foreach>
+    </select>
+
+    <select id="loadMenuTreeByRoleCodes" resultType="menu">
+        select
+        <include refid="queryJoin"/>
+        from menu m
+        left join role_menu rm on rm.menu_id = m.menu_id
+        left join role r on r.role_id = rm.role_id
+        where m.type = 0 and r.role_code in
+        <foreach collection="roleCodes" item="roleCode" open="(" separator="," close=")">
+            #{roleCode}
+        </foreach>
+    </select>
+
+    <update id="setChildPids">
+        update menu set menu_pids = #{pids} where menu_pid = #{menuId}
+    </update>
+
+    <delete id="deleteMenuRoleById">
+        delete from role_menu where menu_id = #{menuId}
+    </delete>
+
+    <delete id="deleteMenuById">
+        delete from menu where instr(menu_pids,#{menuId})
+    </delete>
+
+    <select id="getRoleByMenuId" resultType="java.lang.Integer">
+        select r.role_id from `role` r,`role_menu` rm
+        where rm.role_id = r.role_id and rm.menu_id = #{menuId}
+    </select>
+</mapper>
