@@ -37,5 +37,12 @@ public interface UserService extends IService<User> {
      */
     boolean editUser(UserDto userDto);
 
+    /**
+     * 逻辑删除
+     * @param id
+     * @return
+     */
     boolean delUser(Integer id);
+
+    void updateCenter(User user);
 }

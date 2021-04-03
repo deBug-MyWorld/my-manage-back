@@ -93,6 +93,14 @@ public class UserController {
         return AjaxResponse.success(userService.editUser(userDto));
     }
 
+
+    @ApiOperation("个人中心编辑信息")
+    @PostMapping("/center")
+    public AjaxResponse center(@RequestBody User user){
+        userService.updateCenter(user);
+        return AjaxResponse.success();
+    }
+
     @ApiOperation("检查用户名是否已存在")
     @GetMapping("checkName/{username}")
     public AjaxResponse checkName(@PathVariable("username") String username){

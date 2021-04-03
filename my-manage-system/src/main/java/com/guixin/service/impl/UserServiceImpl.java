@@ -1,8 +1,11 @@
 package com.guixin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.guixin.exception.CustomException;
+import com.guixin.exception.CustomExceptionType;
 import com.guixin.pojo.User;
 import com.guixin.mapper.UserMapper;
 import com.guixin.pojo.dto.UserDto;
@@ -103,6 +106,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         redisUtil.del("user::username:"+user.getUsername());
         redisUtil.del(Redis_Token_Key+user.getUsername());
         return userMapper.deleteById(id)>0;
+    }
+
+    @Override
+    public void updateCenter(User user) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        User user1 = userMapper.selectOne(wrapper.eq("username",user.getUsername()));
+        if (user1!=null && !user1.getUserId().equals(user.getUserId())){
+            throw new CustomException(CustomExceptionType.USER_INPUT_ERROR,"用户名已存在!");
+        }else if (user1!=null && user1.getUserId().equals(user.getUserId())){ // 是自己，没修改名称，清空用户信息缓存
+            redisUtil.del("user::username:"+user1.getUsername());
+        } else {  // user1 为空，则无该用户名，表示修改了用户名，清空所有缓存
+            wrapper = new QueryWrapper<>();
+            User user2 = userMapper.selectOne(wrapper.eq("user_id",user.getUserId()));
+            redisUtil.del("user::username:"+user2.getUsername());
+            redisUtil.del("role::username:"+user2.getUsername());
+            redisUtil.del("menu::username:"+user2.getUsername());
+            redisUtil.del("menu::bulidMenu:"+user2.getUsername());
+            redisUtil.del(Redis_Token_Key+user2.getUsername());
+        }
+        userMapper.updateById(user);
     }
 
     @Cacheable(key = "'username:'+#p0",unless="#result == null")
