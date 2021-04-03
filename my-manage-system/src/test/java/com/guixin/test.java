@@ -17,12 +17,14 @@ public class test {
     @Test
     void  test1(){
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String rawPassword = "123456";
-        String encodedPassword = passwordEncoder.encode(rawPassword);
-        // $2a$10$ltpZqfODKvzWLEP73aZPHuX.9jiEn0jWkrOjj3EmXLO48awnAeLkG
-        // $2a$10$z7PKn/lLFyIBauk6ypgsJ.feqnc0K6h4pomT6LcLZ4cEeLNeKr9.i
-        System.out.println(encodedPassword);
-        System.out.println(passwordEncoder.matches(rawPassword,encodedPassword));
+        String rawPassword = "12345678";
+//        String encodedPassword = passwordEncoder.encode(rawPassword);
+//        // $2a$10$ltpZqfODKvzWLEP73aZPHuX.9jiEn0jWkrOjj3EmXLO48awnAeLkG
+//        // $2a$10$z7PKn/lLFyIBauk6ypgsJ.feqnc0K6h4pomT6LcLZ4cEeLNeKr9.i
+//        System.out.println(encodedPassword);
+//        System.out.println(passwordEncoder.matches(rawPassword,encodedPassword));
+        String newPass = "$2a$10$eaGgsndFmCYLSQtMPDpjNeKINOn6DJBP9DKhO8pi85j2vpK/ZUOX6";
+        System.out.println(passwordEncoder.matches(rawPassword,newPass));
     }
     @Test
     public void testSelectByBatchIds(){

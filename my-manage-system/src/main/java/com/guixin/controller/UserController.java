@@ -9,6 +9,7 @@ import com.guixin.exception.CustomException;
 import com.guixin.exception.CustomExceptionType;
 import com.guixin.pojo.User;
 import com.guixin.pojo.dto.UserDto;
+import com.guixin.pojo.vo.UserPassVo;
 import com.guixin.service.UserService;
 import com.guixin.util.SecurityUtil;
 import io.swagger.annotations.Api;
@@ -100,6 +101,15 @@ public class UserController {
         userService.updateCenter(user);
         return AjaxResponse.success();
     }
+
+    @ApiOperation("修改密码")
+    @PostMapping("/updatePass")
+    public AjaxResponse updatePass(@RequestBody UserPassVo passVo){
+        userService.updatePass(passVo);
+        return AjaxResponse.success();
+    }
+
+
 
     @ApiOperation("检查用户名是否已存在")
     @GetMapping("checkName/{username}")

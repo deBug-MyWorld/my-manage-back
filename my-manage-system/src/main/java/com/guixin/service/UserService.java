@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.guixin.pojo.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.guixin.pojo.dto.UserDto;
+import com.guixin.pojo.vo.UserPassVo;
 
 import java.util.List;
 
@@ -45,4 +46,6 @@ public interface UserService extends IService<User> {
     boolean delUser(Integer id);
 
     void updateCenter(User user);
+
+    void updatePass(UserPassVo passVo);
 }

@@ -13,4 +13,8 @@
     <delete id="delUserRoles">
         delete from user_role where user_id = #{userId}
     </delete>
+
+    <update id="updatePass">
+        update user set password = #{password} where username = #{username}
+    </update>
 </mapper>

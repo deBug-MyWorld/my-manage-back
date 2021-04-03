@@ -22,4 +22,6 @@ public interface UserMapper extends BaseMapper<User> {
     Boolean addUserRoles(@Param("userId") Integer userId,@Param("roleId") Integer roleId);
 
     Boolean delUserRoles(@Param("userId") Integer userId);
+
+    void updatePass(@Param("username") String username,@Param("password") String password);
 }

@@ -4,21 +4,25 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.guixin.auth.MyUserDetails;
 import com.guixin.exception.CustomException;
 import com.guixin.exception.CustomExceptionType;
 import com.guixin.pojo.User;
 import com.guixin.mapper.UserMapper;
 import com.guixin.pojo.dto.UserDto;
+import com.guixin.pojo.vo.UserPassVo;
 import com.guixin.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.guixin.util.JwtTokenUtil;
 import com.guixin.util.RedisUtil;
+import com.guixin.util.SecurityUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -126,6 +130,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             redisUtil.del(Redis_Token_Key+user2.getUsername());
         }
         userMapper.updateById(user);
+    }
+
+    @Override
+    public void updatePass(UserPassVo passVo) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        Authentication authentication = SecurityUtil.getCurrentUser();
+        MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
+        User user = userMapper.selectOne(wrapper.eq("username",myUserDetails.getUsername()));
+        if (!passwordEncoder.matches(passVo.getOldPass(), user.getPassword())){
+            throw new CustomException(CustomExceptionType.USER_INPUT_ERROR,"修改失败，旧密码错误!");
+        }
+        if (passwordEncoder.matches(passVo.getNewPass(),user.getPassword())){
+            throw new CustomException(CustomExceptionType.USER_INPUT_ERROR,"新密码不能与旧密码相同!");
+        }
+        redisUtil.del("user::username:"+myUserDetails.getUsername());
+        redisUtil.del(Redis_Token_Key+myUserDetails.getUsername());
+        userMapper.updatePass(myUserDetails.getUsername(),passwordEncoder.encode(passVo.getNewPass()));
     }
 
     @Cacheable(key = "'username:'+#p0",unless="#result == null")
