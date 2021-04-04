@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @ControllerAdvice
 public class WebExceptionHandler {
@@ -46,6 +47,12 @@ public class WebExceptionHandler {
     public AjaxResponse myAccessDeniedException(AccessDeniedException e){
         System.out.println(e);
         return AjaxResponse.error(new CustomException(CustomExceptionType.ACCESS_DENIED));
+    }
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    @ResponseBody
+    public AjaxResponse myMaxUploadSizeExceededException(MaxUploadSizeExceededException e){
+        System.out.println(e);
+        return AjaxResponse.error(new CustomException(CustomExceptionType.SYSTEM_ERROR,"文件大小超过限制！"));
     }
 
     // 其他异常

@@ -30,6 +30,7 @@ public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
         String username = jwtTokenUtil.getUsernameFromToken(request.getHeader(jwtTokenUtil.getHeader())) ;
 
         if (StrUtil.isNotEmpty(username)){
+            redisUtil.del("user::username:"+username);
             redisUtil.del(jwtTokenUtil.getRedis_Token_Key()+username);
         }
         log.info("=== 用户【{}】在 {} 退出了系统 ===", username, DateUtil.nowString());

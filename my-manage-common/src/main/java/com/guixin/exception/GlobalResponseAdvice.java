@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-// 在数据返回给前端前做最后一步拦截处理 只针对Controller
+// 在数据返回给前端前做最后一步拦截处理 统一http状态码
 @Component
-@ControllerAdvice
+@ControllerAdvice(basePackages = "com.guixin.controller")
 public class GlobalResponseAdvice implements ResponseBodyAdvice<Object> {
     @Override  // 支持哪些方法参数，响应类 都支持返回true
     public boolean supports(MethodParameter methodParameter, Class aClass) {

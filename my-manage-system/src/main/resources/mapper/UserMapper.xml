@@ -17,4 +17,8 @@
     <update id="updatePass">
         update user set password = #{password} where username = #{username}
     </update>
+
+    <update id="updateAvatar">
+        update user set avatar = #{avatar} where username = #{username}
+    </update>
 </mapper>

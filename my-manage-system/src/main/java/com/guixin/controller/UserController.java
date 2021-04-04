@@ -10,6 +10,7 @@ import com.guixin.exception.CustomExceptionType;
 import com.guixin.pojo.User;
 import com.guixin.pojo.dto.UserDto;
 import com.guixin.pojo.vo.UserPassVo;
+import com.guixin.service.AliOssService;
 import com.guixin.service.UserService;
 import com.guixin.util.SecurityUtil;
 import io.swagger.annotations.Api;
@@ -20,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.stream.Collectors;
@@ -38,7 +40,7 @@ import java.util.stream.Collectors;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @ApiOperation("测试后台是否成功启动")
     @GetMapping("/index")

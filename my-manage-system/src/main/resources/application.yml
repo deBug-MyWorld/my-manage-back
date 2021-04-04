@@ -3,6 +3,11 @@ spring:
     active: dev
   application:
     name: my-manage-system
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10KB
+      max-request-size: 10KB
   security:
     loginType: JSON
 
@@ -61,5 +66,9 @@ jwt:
   # token 续期检查时间范围（默认30分钟，单位毫秒），在token即将过期的一段时间内用户操作了，则给用户的token续期
   detect: 1800000
 
-
+alioss:
+  endpoint: oss-cn-hangzhou.aliyuncs.com
+  accessKeyId: LTAI5tERcaXkFxnGudGz7YfG
+  accessKeySecret: mCXDdDyDH81WWHezC27cFZFakdIRlw
+  bucketName: guixin-manage
 

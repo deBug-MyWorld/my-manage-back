@@ -30,10 +30,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         System.out.println(request.getRequestURI());
-        if (getTokenIgnoreUrl().contains(request.getRequestURI())){
-            filterChain.doFilter(request,response);
-            return;
-        }
         String jwtToken = request.getHeader(jwtTokenUtil.getHeader());
         if (!ObjectUtils.isEmpty(jwtToken)){
             String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
@@ -50,12 +46,5 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request,response);
-    }
-    // 直接放过不需要检查token的请求
-    private List<String>getTokenIgnoreUrl(){
-        List<String>tokenIgnoreUrls = new ArrayList<>();
-        tokenIgnoreUrls.add("/refreshtoken");
-        tokenIgnoreUrls.add("/certification");
-        return tokenIgnoreUrls;
     }
 }

@@ -11,6 +11,7 @@ import com.guixin.pojo.User;
 import com.guixin.mapper.UserMapper;
 import com.guixin.pojo.dto.UserDto;
 import com.guixin.pojo.vo.UserPassVo;
+import com.guixin.service.AliOssService;
 import com.guixin.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.guixin.util.JwtTokenUtil;
@@ -48,6 +49,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private PasswordEncoder passwordEncoder;
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private AliOssService aliOssService;
     @Value("${jwt.Redis_Token_Key}")
     private String Redis_Token_Key;
     /**
@@ -147,6 +150,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         redisUtil.del("user::username:"+myUserDetails.getUsername());
         redisUtil.del(Redis_Token_Key+myUserDetails.getUsername());
         userMapper.updatePass(myUserDetails.getUsername(),passwordEncoder.encode(passVo.getNewPass()));
+    }
+
+    @Override
+    public void updateAvatar(String avatar) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        Authentication authentication = SecurityUtil.getCurrentUser();
+        MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
+        User user = userMapper.selectOne(wrapper.eq("username",myUserDetails.getUsername()));
+        if (user.getAvatar()!=null){
+            aliOssService.deleteFile(user.getAvatar());
+        }
+        userMapper.updateAvatar(myUserDetails.getUsername(),avatar);
+        redisUtil.del("user::username:"+myUserDetails.getUsername());
     }
 
     @Cacheable(key = "'username:'+#p0",unless="#result == null")

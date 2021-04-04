@@ -48,4 +48,6 @@ public interface UserService extends IService<User> {
     void updateCenter(User user);
 
     void updatePass(UserPassVo passVo);
+
+    void updateAvatar(String avatar);
 }
