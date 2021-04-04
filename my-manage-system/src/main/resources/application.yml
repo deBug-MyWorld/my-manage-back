@@ -68,7 +68,7 @@ jwt:
 
 alioss:
   endpoint: oss-cn-hangzhou.aliyuncs.com
-  accessKeyId: LTAI5tERcaXkFxnGudGz7YfG
-  accessKeySecret: mCXDdDyDH81WWHezC27cFZFakdIRlw
+  accessKeyId: # 上传到GitHub后阿里云安全检测都发短信邮件提醒，所以还是每次手动配置
+  accessKeySecret: # 上传到GitHub后阿里云安全检测都发短信邮件提醒，所以还是每次手动配置
   bucketName: guixin-manage
 
