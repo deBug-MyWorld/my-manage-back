@@ -59,12 +59,12 @@ mybatis-plus:
   type-aliases-package: com.guixin.pojo
 
 jwt:
-  expiration: 3600000
+  expiration: 3600
   secret: lasdflsdflasdff
   header: Authorization
   Redis_Token_Key: 'redis_token_key:'
-  # token 续期检查时间范围（默认30分钟，单位毫秒），在token即将过期的一段时间内用户操作了，则给用户的token续期
-  detect: 1800000
+  # token 续期检查时间范围（默认30分钟，单位秒），在token即将过期的一段时间内用户操作了，则给用户的token续期
+  detect: 1800
 
 alioss:
   endpoint: oss-cn-hangzhou.aliyuncs.com

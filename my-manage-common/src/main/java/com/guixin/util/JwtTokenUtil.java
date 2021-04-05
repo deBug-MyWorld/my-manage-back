@@ -70,7 +70,7 @@ public class JwtTokenUtil {
     public void checkReNew(String token){
         String username = getUsernameFromToken(token);
         // 判断是否续期token,计算token的过期时间
-        long time = redisUtil.getExpire(Redis_Token_Key + username)*1000;
+        long time = redisUtil.getExpire(Redis_Token_Key + username);
         Date expireDate = DateUtil.offset(new Date(), DateField.MILLISECOND, (int) time);
         // 判断当前时间与过期时间的时间差
         long differ = expireDate.getTime() - System.currentTimeMillis();
