@@ -74,6 +74,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .accessDeniedHandler(myAccessDeniedHandler)
                 .authenticationEntryPoint(myAuthenticationEntryPoint)
+                // 防止iframe 造成跨域
+                .and()
+                .headers()
+                .frameOptions()
+                .disable()
                 // 不创建会话
                 .and()
                 .sessionManagement()
