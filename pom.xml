@@ -28,8 +28,16 @@
 		<velocity.version>2.2</velocity.version>
 		<!--java连接mysql-->
 		<mysql-java.version>8.0.13</mysql-java.version>
+		<!-- oshi监控需要指定jna版本 -->
+		<jna.version>5.5.0</jna.version>
 	</properties>
 	<dependencies>
+		<!-- 获取系统信息 -->
+		<dependency>
+			<groupId>com.github.oshi</groupId>
+			<artifactId>oshi-core</artifactId>
+			<version>5.0.1</version>
+		</dependency>
 		<!-- 阿里oss -->
 		<dependency>
 			<groupId>com.aliyun.oss</groupId>
