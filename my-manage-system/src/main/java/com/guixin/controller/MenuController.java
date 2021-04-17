@@ -3,6 +3,7 @@ package com.guixin.controller;
 
 import com.guixin.auth.MyUserDetails;
 import com.guixin.exception.AjaxResponse;
+import com.guixin.log.SysLog;
 import com.guixin.pojo.Menu;
 import com.guixin.pojo.Role;
 import com.guixin.pojo.dto.MenuDto;
@@ -44,7 +45,7 @@ public class MenuController {
         return AjaxResponse.success(menuService.bulidMenus(list));
     }
 
-
+    @SysLog("查询菜单")
     @ApiOperation("获取全部菜单")
     @PreAuthorize("@pm.hasPermission('menu:list')")
     @GetMapping
@@ -52,6 +53,7 @@ public class MenuController {
         return AjaxResponse.success(menuService.getAllMenus());
     }
 
+    @SysLog("新增菜单")
     @ApiOperation("新增菜单/按钮")
     @PreAuthorize("@pm.hasPermission('menu:add')")
     @PostMapping
@@ -59,6 +61,7 @@ public class MenuController {
         return AjaxResponse.success(menuService.addMenu(menuDto));
     }
 
+    @SysLog("修改菜单")
     @ApiOperation("修改菜单/按钮")
     @PreAuthorize("@pm.hasPermission('menu:edit')")
     @PutMapping
@@ -66,6 +69,7 @@ public class MenuController {
         return AjaxResponse.success(menuService.editMenu(menuDto));
     }
 
+    @SysLog("删除菜单")
     @ApiOperation("删除菜单/按钮")
     @PreAuthorize("@pm.hasPermission('menu:delete')")
     @DeleteMapping

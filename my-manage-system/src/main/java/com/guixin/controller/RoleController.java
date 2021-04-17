@@ -4,6 +4,7 @@ package com.guixin.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.guixin.exception.AjaxResponse;
+import com.guixin.log.SysLog;
 import com.guixin.pojo.Role;
 import com.guixin.pojo.dto.RoleDto;
 import com.guixin.service.RoleService;
@@ -37,6 +38,7 @@ public class RoleController {
         return AjaxResponse.success(roleService.list(null));
     }
 
+    @SysLog("查询角色")
     @ApiOperation("分页获取角色列表")
     @PreAuthorize("@pm.hasPermission('role:list')")
     @GetMapping
@@ -50,6 +52,7 @@ public class RoleController {
         return AjaxResponse.success(roleService.page(page,wrapper));
     }
 
+    @SysLog("删除角色")
     @ApiOperation("逻辑删除角色")
     @PreAuthorize("@pm.hasPermission('role:delete')")
     @DeleteMapping
@@ -58,6 +61,7 @@ public class RoleController {
         return AjaxResponse.success();
     }
 
+    @SysLog("新增角色")
     @ApiOperation("新增角色")
     @PreAuthorize("@pm.hasPermission('role:add')")
     @PostMapping
@@ -66,6 +70,7 @@ public class RoleController {
         return AjaxResponse.success();
     }
 
+    @SysLog("修改角色")
     @ApiOperation("编辑角色")
     @PreAuthorize("@pm.hasPermission('role:edit')")
     @PutMapping
@@ -81,6 +86,7 @@ public class RoleController {
     }
 
 
+    @SysLog("分配权限")
     @ApiOperation("分配权限")
     @PreAuthorize("@pm.hasPermission('role:permission')")
     @PostMapping("/permission")

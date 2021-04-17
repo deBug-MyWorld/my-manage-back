@@ -1,6 +1,7 @@
 package com.guixin.controller;
 
 import com.guixin.exception.AjaxResponse;
+import com.guixin.log.SysLog;
 import com.guixin.service.AliOssService;
 import com.guixin.service.UserService;
 import io.swagger.annotations.Api;
@@ -19,6 +20,7 @@ public class AliOssController {
     @Autowired
     private UserService userService;
 
+    @SysLog("头像上传")
     @ApiOperation("头像上传")
     @PostMapping("/uploadAvatar")
     public AjaxResponse uploadAvatar(@RequestParam("avatar") MultipartFile file){
@@ -27,6 +29,7 @@ public class AliOssController {
         return AjaxResponse.success();
     }
 
+    @SysLog("删除头像")
     @ApiOperation(value = "删除头像")
     @PostMapping("/deleteImgFile")
     public AjaxResponse deleteImgFile(String file){

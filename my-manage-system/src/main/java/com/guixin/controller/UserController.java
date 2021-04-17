@@ -7,6 +7,7 @@ import com.guixin.auth.MyUserDetails;
 import com.guixin.exception.AjaxResponse;
 import com.guixin.exception.CustomException;
 import com.guixin.exception.CustomExceptionType;
+import com.guixin.log.SysLog;
 import com.guixin.pojo.User;
 import com.guixin.pojo.dto.UserDto;
 import com.guixin.pojo.vo.UserPassVo;
@@ -62,6 +63,7 @@ public class UserController {
         return AjaxResponse.success(map);
     }
 
+    @SysLog("查询用户")
     @ApiOperation("分页获取全部用户信息")
     @PreAuthorize("@pm.hasPermission('user:list')")
     @GetMapping
@@ -75,6 +77,7 @@ public class UserController {
         return AjaxResponse.success(userService.page(page,wrapper));
     }
 
+    @SysLog("删除用户")
     @ApiOperation("逻辑删除用户")
     @PreAuthorize("@pm.hasPermission('user:delete')")
     @DeleteMapping
@@ -82,6 +85,7 @@ public class UserController {
         return AjaxResponse.success(userService.delUser(id));
     }
 
+    @SysLog("新增用户")
     @ApiOperation("新增用户")
     @PreAuthorize("@pm.hasPermission('user:add')")
     @PostMapping
@@ -89,6 +93,7 @@ public class UserController {
         return AjaxResponse.success(userService.addUser(userDto));
     }
 
+    @SysLog("编辑用户")
     @ApiOperation("编辑用户")
     @PreAuthorize("@pm.hasPermission('user:edit')")
     @PutMapping
@@ -96,7 +101,7 @@ public class UserController {
         return AjaxResponse.success(userService.editUser(userDto));
     }
 
-
+    @SysLog("个人中心编辑信息")
     @ApiOperation("个人中心编辑信息")
     @PostMapping("/center")
     public AjaxResponse center(@RequestBody User user){
@@ -104,6 +109,7 @@ public class UserController {
         return AjaxResponse.success();
     }
 
+    @SysLog("修改密码")
     @ApiOperation("修改密码")
     @PostMapping("/updatePass")
     public AjaxResponse updatePass(@RequestBody UserPassVo passVo){
