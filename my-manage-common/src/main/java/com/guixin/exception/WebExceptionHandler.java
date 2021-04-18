@@ -1,5 +1,7 @@
 package com.guixin.exception;
 
+import com.guixin.util.ThrowableUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @ControllerAdvice
+@Slf4j
 public class WebExceptionHandler {
     // 参数校验与绑定  JSR 303
     @ExceptionHandler(BindException.class)
@@ -31,6 +34,7 @@ public class WebExceptionHandler {
     public AjaxResponse customerException(CustomException e){
         // 日志持久化
         System.out.println("自定义异常");
+        log.error(ThrowableUtil.getStackTrace(e));
         return AjaxResponse.error(e);
     }
 
@@ -60,8 +64,8 @@ public class WebExceptionHandler {
     @ResponseBody
     public AjaxResponse exception(Exception e){
         // 日志持久化
-        System.out.println(e);
         System.out.println("未知异常");
+        log.error(ThrowableUtil.getStackTrace(e));
         return AjaxResponse.error(new CustomException(CustomExceptionType.OTHER_ERROR,"未知异常"));
     }
 }

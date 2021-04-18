@@ -53,7 +53,7 @@ public class LogAspect {
         sysLog.setType("ERROR");
         sysLog.setTime(System.currentTimeMillis() - currentTime.get());
         currentTime.remove();
-        sysLog.setExceptionDetail(ThrowableUtil.getStackTrace(e).getBytes());
+        sysLog.setExceptionDetail(ThrowableUtil.getStackTrace(e));
         sysLogService.save(getUsername(), (ProceedingJoinPoint) joinPoint,sysLog);
     }
 

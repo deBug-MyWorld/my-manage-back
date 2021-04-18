@@ -62,7 +62,7 @@ public class SysLog implements Serializable {
 
 
     @ApiModelProperty(value = "错误详情")
-    private byte[] exceptionDetail;
+    private String exceptionDetail;
 
     @ApiModelProperty(value = "操作人")
     private String createBy;
