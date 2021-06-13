@@ -46,6 +46,12 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
         Method method = signature.getMethod();
         com.guixin.log.SysLog aopLog = method.getAnnotation(com.guixin.log.SysLog.class);
         sysLog.setDescription(aopLog.value());
+        // 参数值
+        StringBuilder params = new StringBuilder("{");
+        List<Object> argValues = new ArrayList<>(Arrays.asList(joinPoint.getArgs()));
+        for (Object argValue : argValues){
+            params.append(argValue).append(" ");
+        }
         // 方法路径
         String methodName = joinPoint.getTarget().getClass().getName() + "." + signature.getName() + "()";
         sysLog.setMethodName(methodName);
@@ -56,7 +62,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
         String ip = ServletUtil.getClientIP(request);
         sysLog.setIp(ip);
         sysLog.setAddr(AddressUtil.getAddressByIp(ip));
-        sysLog.setParams(HttpUtil.toParams(request.getParameterMap()));
+        sysLog.setParams(params.toString()+"}");
         sysLogMapper.insert(sysLog);
     }
 }
