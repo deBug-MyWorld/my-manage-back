@@ -97,6 +97,7 @@ public class QuartzJobServiceImpl extends ServiceImpl<QuartzJobMapper, QuartzJob
 
         // 将任务对象放入dataMap
         jobDetail.getJobDataMap().put(JOB_DATA_KEY,quartzJob);
+        System.out.println(quartzJob);
         try {
             String name = quartzJob.getJobName();
             JobKey jobKey = JobKey.jobKey(name);
@@ -110,6 +111,7 @@ public class QuartzJobServiceImpl extends ServiceImpl<QuartzJobMapper, QuartzJob
             // 如果一开始就是暂停的，则不启动
             if (quartzJob.getStatus().equals("2")){
                 scheduler.pauseJob(jobKey);
+                System.out.println("一开始就是暂停，不启动");
             }
 
         } catch (SchedulerException e) {
