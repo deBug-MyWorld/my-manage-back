@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.scheduling.annotation.Async;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -17,5 +18,5 @@ import java.util.List;
  */
 public interface SysLogService extends IService<SysLog> {
     @Async
-    void save(String username, ProceedingJoinPoint joinPoint,SysLog sysLog);
+    void save(String username, HttpServletRequest request, ProceedingJoinPoint joinPoint, SysLog sysLog);
 }

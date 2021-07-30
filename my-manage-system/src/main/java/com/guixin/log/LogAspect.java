@@ -16,6 +16,11 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 
 @Aspect
@@ -43,7 +48,8 @@ public class LogAspect {
         sysLog.setType("INFO");
         sysLog.setTime(System.currentTimeMillis() - currentTime.get());
         currentTime.remove();
-        sysLogService.save(getUsername(),point,sysLog);
+        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        sysLogService.save(getUsername(),request,point,sysLog);
         return result;
     }
 
@@ -54,7 +60,8 @@ public class LogAspect {
         sysLog.setTime(System.currentTimeMillis() - currentTime.get());
         currentTime.remove();
         sysLog.setExceptionDetail(ThrowableUtil.getStackTrace(e));
-        sysLogService.save(getUsername(), (ProceedingJoinPoint) joinPoint,sysLog);
+        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        sysLogService.save(getUsername(),request, (ProceedingJoinPoint) joinPoint,sysLog);
     }
 
     public String getUsername(){

@@ -38,8 +38,10 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
     @Resource
     private SysLogMapper sysLogMapper;
     @Override
-    public void save(String username, ProceedingJoinPoint joinPoint,SysLog sysLog) {
-        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+    public void save(String username,HttpServletRequest request, ProceedingJoinPoint joinPoint,SysLog sysLog) {
+        System.out.println("当前线程："+Thread.currentThread().getName());
+        //HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        // RequestContextHolder.getRequestAttributes() 坑：Spring Boot 默认使用ThreadLocal把Request设置进请求线程中，这样如果在请求方法里面另起一个子线程然后再通过getRequestAttributes方法获取，是获取不到的。
         //从切面织入点处通过反射机制获取织入点处的方法
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         //获取切入点所在的方法
