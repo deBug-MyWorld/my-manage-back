@@ -57,5 +57,7 @@ public class Role implements Serializable {
     @ApiModelProperty(value = "排序等级")
     private Integer sort;
 
+    @ApiModelProperty(value = "数据权限")
+    private String dataScope;
 
 }

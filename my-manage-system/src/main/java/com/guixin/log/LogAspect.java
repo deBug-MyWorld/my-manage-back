@@ -1,9 +1,11 @@
 package com.guixin.log;
 
 
+import cn.hutool.extra.servlet.ServletUtil;
 import com.guixin.auth.MyUserDetails;
 import com.guixin.pojo.SysLog;
 import com.guixin.service.SysLogService;
+import com.guixin.util.AddressUtil;
 import com.guixin.util.SecurityUtil;
 import com.guixin.util.ThrowableUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +51,11 @@ public class LogAspect {
         sysLog.setTime(System.currentTimeMillis() - currentTime.get());
         currentTime.remove();
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        sysLog.setMethod(request.getMethod());
+        // 通过hutool获取ip
+        String ip = ServletUtil.getClientIP(request);
+        sysLog.setIp(ip);
+        sysLog.setAddr(AddressUtil.getAddressByIp(ip));
         sysLogService.save(getUsername(),request,point,sysLog);
         return result;
     }
@@ -61,6 +68,11 @@ public class LogAspect {
         currentTime.remove();
         sysLog.setExceptionDetail(ThrowableUtil.getStackTrace(e));
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        sysLog.setMethod(request.getMethod());
+        // 通过hutool获取ip
+        String ip = ServletUtil.getClientIP(request);
+        sysLog.setIp(ip);
+        sysLog.setAddr(AddressUtil.getAddressByIp(ip));
         sysLogService.save(getUsername(),request, (ProceedingJoinPoint) joinPoint,sysLog);
     }
 

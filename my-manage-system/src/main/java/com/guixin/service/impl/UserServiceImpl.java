@@ -27,6 +27,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -106,13 +107,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean delUser(Integer id) {
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(User::getUserId,id);
         User user = userMapper.selectOne(wrapper);
         redisUtil.del("user::username:"+user.getUsername());
         redisUtil.del(Redis_Token_Key+user.getUsername());
-        return userMapper.deleteById(id)>0;
+        boolean flag = userMapper.delUserRoles(user.getUserId());
+        return userMapper.deleteById(id)>0&&flag;
     }
 
     @Override

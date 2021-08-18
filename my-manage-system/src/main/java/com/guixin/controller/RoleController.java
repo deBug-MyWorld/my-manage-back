@@ -57,6 +57,7 @@ public class RoleController {
     @PreAuthorize("@pm.hasPermission('role:delete')")
     @DeleteMapping
     public AjaxResponse del(@RequestBody int roleId){
+        roleService.verification(roleId);
         roleService.deleteById(roleId);
         return AjaxResponse.success();
     }
@@ -65,8 +66,8 @@ public class RoleController {
     @ApiOperation("新增角色")
     @PreAuthorize("@pm.hasPermission('role:add')")
     @PostMapping
-    public AjaxResponse add(@RequestBody Role role){
-        roleService.addRole(role);
+    public AjaxResponse add(@RequestBody RoleDto roleDto){
+        roleService.addRole(roleDto);
         return AjaxResponse.success();
     }
 
@@ -74,8 +75,8 @@ public class RoleController {
     @ApiOperation("编辑角色")
     @PreAuthorize("@pm.hasPermission('role:edit')")
     @PutMapping
-    public AjaxResponse edit(@RequestBody Role role){
-        roleService.editRole(role);
+    public AjaxResponse edit(@RequestBody RoleDto roleDto){
+        roleService.editRole(roleDto);
         return AjaxResponse.success();
     }
 

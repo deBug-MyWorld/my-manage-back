@@ -17,31 +17,34 @@ import java.util.List;
 public interface RoleService extends IService<Role> {
     /**
      * 新增角色
-     * @param role
-     * @return
+     * @param roleDto /
      */
-    void addRole(Role role);
+    void addRole(RoleDto roleDto);
 
     /**
      * 删除角色
-     * @param roleId
-     * @return
+     * @param roleId /
      */
     void deleteById(Integer roleId);
 
     /**
      * 修改角色
-     * @param role
-     * @return
+     * @param roleDto /
      */
-    void editRole(Role role);
+    void editRole(RoleDto roleDto);
 
     /**
      * 根据角色Id获取菜单
-     * @param roleId
-     * @return
+     * @param roleId /
+     * @return /
      */
     List<Integer> getMenuIdsByRoleId(Integer roleId);
 
     void permission(RoleDto roleDto);
+
+    /**
+     * 验证角色是否被用户关联
+     * @param roleId 角色Id
+     */
+    void verification(Integer roleId);
 }

@@ -36,6 +36,7 @@
         delete from role_menu where menu_id = #{menuId}
     </delete>
 
+<!--    这个instr可能会有问题，以后有时间再改-->
     <delete id="deleteMenuById">
         delete from menu where instr(menu_pids,#{menuId})
     </delete>

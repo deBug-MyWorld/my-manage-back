@@ -57,13 +57,8 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
         // 方法路径
         String methodName = joinPoint.getTarget().getClass().getName() + "." + signature.getName() + "()";
         sysLog.setMethodName(methodName);
-        sysLog.setMethod(request.getMethod());
         sysLog.setCreateBy(username);
         sysLog.setRequestUri(request.getRequestURI());
-        // 通过hutool获取ip
-        String ip = ServletUtil.getClientIP(request);
-        sysLog.setIp(ip);
-        sysLog.setAddr(AddressUtil.getAddressByIp(ip));
         sysLog.setParams(params.toString()+"}");
         sysLogMapper.insert(sysLog);
     }

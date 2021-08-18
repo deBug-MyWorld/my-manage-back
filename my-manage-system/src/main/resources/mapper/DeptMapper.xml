@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guixin.mapper.DeptMapper">
+    <select id="findByRoleId" resultType="dept">
+        select * from dept left join role_dept on dept.dept_id = role_dept.dept_id
+        where role_dept.role_id = #{roleId}
+    </select>
+
+    <select id="selectNormalChildrenDeptById" parameterType="Integer" resultType="int">
+        select count(*) from dept where status = 1 and find_in_set(#{deptId},dept_pids)
+    </select>
+    
+    <select id="selectChildrenDeptById" parameterType="Integer" resultType="dept">
+        select * from dept where find_in_set(#{deptId},dept_pids)
+    </select>
+
+    <!-- 参考 https://blog.csdn.net/network_dream/article/details/89339185   -->
+    <update id="updateDeptChildren" parameterType="java.util.List">
+        update dept set dept_pids =
+        <foreach collection="depts" item="item" index="index" separator=" " open="case dept_id" close="end">
+        when #{item.deptId} then #{item.deptPids}
+        </foreach>
+        where dept_id in
+        <foreach collection="depts" item="item" index="index" separator="," open="(" close=")">
+        #{item.deptId}
+        </foreach>
+    </update>
+    <!-- 这里使用$是因为$使用的是Statement对象，不会区分数据类型，因此不需String转list -->
+    <update id="updateDeptStatus" parameterType="dept">
+        update dept set status = 0 where dept_id in (${deptPids})
+    </update>
+
+</mapper>

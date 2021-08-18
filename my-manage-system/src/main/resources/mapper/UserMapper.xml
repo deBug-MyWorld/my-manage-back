@@ -21,4 +21,16 @@
     <update id="updateAvatar">
         update user set avatar = #{avatar} where username = #{username}
     </update>
+
+    <select id="countByDepts" parameterType="java.util.Set" resultType="int">
+        select count(1) from user where dept_id in
+        <foreach collection="deptIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="countByRole" parameterType="java.lang.Integer" resultType="int">
+        select count(1) from user u,user_role ur where u.user_id = ur.user_id
+        and role_id = #{roleId}
+    </select>
 </mapper>

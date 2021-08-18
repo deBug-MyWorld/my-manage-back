@@ -8,6 +8,8 @@ import java.util.List;
 public class UserDto implements Serializable {
     private Integer userId;
 
+    private Integer deptId;
+
     private String username;
 
     private String gender;

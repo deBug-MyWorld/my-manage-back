@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -32,6 +33,9 @@ public class User implements Serializable {
     @ApiModelProperty(value = "ID")
     @TableId(value = "user_id", type = IdType.AUTO)
     private Integer userId;
+
+    @ApiModelProperty(value = "部门ID")
+    private Integer deptId;
 
     @ApiModelProperty(value = "用户名")
     private String username;
